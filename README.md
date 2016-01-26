@@ -1,7 +1,7 @@
 # DATA_WALKING
 Data Walking research project
 
-WALK SCHEDULE:
+WALK SCHEDULE:<br/>
 27/01/2016<br/>
 24/02/2016<br/>
 23/03/2016<br/>
