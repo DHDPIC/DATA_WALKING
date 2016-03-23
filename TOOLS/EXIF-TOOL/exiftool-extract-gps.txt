@@ -1,0 +1,5 @@
+exiftool -csv -filename -gps:GPSLatitude -gps:GPSLongitude ./ > fetcheddata.csv
+
+decimal gps:
+
+exiftool -csv -filename -datetimeoriginal -gpslatitude -gpslongitude -n ./ > data2.csv

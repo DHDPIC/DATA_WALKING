@@ -204,8 +204,6 @@ void loop() {
     
     //Serial.println(day);
     
-    soundAcc /= soundInc;
-    
     char *stringptr = GPS.lastNMEA();
     uint8_t stringsize = strlen(stringptr) - 1; //subtract 2 to eliminate <cr>
     if (stringsize != logfile.write((uint8_t *)stringptr, stringsize))    //write the string to the SD file
