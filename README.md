@@ -1,6 +1,8 @@
 # DATA WALKING
 A research project exploring environmental data gathering & data visualisation
 
+Project website: [http://datawalking.com/](http://datawalking.com/)
+
 WALK SCHEDULE:
 
 1. ~~27/01/2016~~
