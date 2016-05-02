@@ -1,4 +1,4 @@
-# DATA_WALKING
+# DATA WALKING
 A research project exploring environmental data gathering & data visualisation
 
 WALK SCHEDULE:
