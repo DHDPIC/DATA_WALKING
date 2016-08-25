@@ -8,12 +8,13 @@ int rowSound = 18;
 int rowSndAvg = 19;
 int rowSndPek = 20;
 int rowTemp = 21;
+int dust = 25;
 
 void setup() {
   //
   size(1280,800);
   //
-  data = loadTable("20160127.csv");
+  data = loadTable("dusttest2.csv");
   println(data.getRowCount());
   //
   graph = createGraphics(data.getRowCount(), 800);
@@ -21,10 +22,10 @@ void setup() {
   graph.beginDraw();
   for(int i=0; i<data.getRowCount(); i++) {
     
-    float d = data.getFloat(i, rowSndPek);
+    float d = data.getFloat(i, dust);
     println(d);
     
-    graph.line(i,0,i,map(d,0,512,0,800));
+    graph.line(i,0,i,map(d,0,4000,0,800));
     
   }
   graph.endDraw();
@@ -34,5 +35,5 @@ void setup() {
 void draw() {
   //
   background(255);
-  image(graph,float(mouseX)/width*-graph.width,0);
+  image(graph,(float(mouseX)/width*-graph.width)+(width*float(mouseX)/width),0);
 }
