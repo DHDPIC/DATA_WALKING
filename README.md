@@ -10,7 +10,9 @@ WALK SCHEDULE:
 3. ~~23/03/2016~~
 4. ~~20/04/2016~~
 5. ~~18/05/2016~~
-6. 15/06/2016
+6. ~~15/06/2016~~
+7. ~~28/07/2016~~
+8. ~~25/08/2016~~
 
 ### ABOUT:<br/>
 The aim of the Data Walking research project is to collect environmental data while walking around North Greenwich, to build a rich picture of that area over time. There will be one walk per month for the first six months of 2016 and open to anyone who wants to join and explore the area, ideas on data gathering techniques, and the field of data visualisation.
