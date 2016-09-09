@@ -1,4 +1,4 @@
-latitude,longitude,time,date,MQ135 value,MQ135 Average,MQ135 peak,MQ2 value, MQ2 average, MQ2 peak, dust
+latitude,longitude,time,date,MQ135 value,MQ135 average,MQ135 peak,MQ2 value, MQ2 average, MQ2 peak, dust
 51.5022773742,0.0058949999,13:36:41,0/0/200,108.00,108.66,111.00,74.00,74.29,77.00,44.00
 51.5022773742,0.0058882999,13:36:42,0/0/200,109.00,108.59,111.00,75.00,74.25,77.00,44.00
 51.5022850036,0.0058833003,13:36:43,0/0/200,110.00,108.74,112.00,77.00,74.10,77.00,44.00
