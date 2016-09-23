@@ -63,7 +63,8 @@ void draw() {
   for (int i=1; i<locs.length; i+=1) {
     ScreenPosition pos1 = map.getScreenPosition(locs[i-1]);
     ScreenPosition pos2 = map.getScreenPosition(locs[i]);
-    //line(pos1.x, pos1.y, pos2.x, pos2.y);
+    stroke(255,0,0);
+    line(pos1.x, pos1.y, pos2.x, pos2.y);
   }
   // PLOT LIGHT
   for (int i=1; i<locs.length; i+=1) {
@@ -122,7 +123,7 @@ void draw() {
     
     float s = map(table.getFloat(i,gasMQ135),0,200,0,60);
     fill(138,250,52);
-    ellipse(pos1.x, pos1.y, s, s);
+    //ellipse(pos1.x, pos1.y, 5, 5);
   }
 }
 

@@ -1,4 +1,4 @@
-latitude,longitude,time,date,light,sound value,sound average,sound peak,temperature, people, cumulative people
+latitude,longitude,time,date,light,sound value,sound average,sound peak,temperature,people,cumulative people
 0.0000000000,0.0000000000,13:36:41,0/0/200,19,4,5.21,8,26.66,0,0
 0.0000000000,0.0000000000,13:36:42,25/8/2016,22,0,5.30,46,26.17,0,0
 0.0000000000,0.0000000000,13:36:43,25/8/2016,23,10,5.74,37,26.66,0,0
