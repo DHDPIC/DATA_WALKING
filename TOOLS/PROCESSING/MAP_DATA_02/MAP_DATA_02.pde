@@ -39,7 +39,7 @@ void setup() {
   lats = new FloatList();
   lons = new FloatList();
   //
-  table = loadTable("20160825-gas-sensors.csv");
+  table = loadTable("20160923-gas-sensors.csv", "header");
   println(table.getRowCount());
   locs = new Location[table.getRowCount()];
   for(int r=0; r<table.getRowCount(); r++) {
@@ -93,6 +93,7 @@ void draw() {
     
     float s = map(table.getFloat(i,rowSndAvg),0,124,1,64);
     fill(250,138,52);
+    noStroke();
     //ellipse(pos1.x, pos1.y, s, s);
   }
   
@@ -103,6 +104,7 @@ void draw() {
     
     float s = map(table.getFloat(i,rowPeople),0,20,0,60);
     fill(250,138,52);
+    noStroke();
     //ellipse(pos1.x, pos1.y, s, s);
   }
   
@@ -113,17 +115,19 @@ void draw() {
     
     float s = map(table.getFloat(i,dust),0,40000,0,60);
     fill(250,138,52);
+    noStroke();
     //ellipse(pos1.x, pos1.y, s, s);
   }
   
-  // PLOT DUST
+  // PLOT GAS
   for (int i=1; i<locs.length; i+=1) {
     ScreenPosition pos1 = map.getScreenPosition(locs[i-1]);
     ScreenPosition pos2 = map.getScreenPosition(locs[i]);
     
-    float s = map(table.getFloat(i,gasMQ135),0,200,0,60);
+    float s = map(table.getFloat(i,gasMQ135),80,190,0,60);
     fill(138,250,52);
-    //ellipse(pos1.x, pos1.y, 5, 5);
+    noStroke();
+    //ellipse(pos1.x, pos1.y, s, s);
   }
 }
 
