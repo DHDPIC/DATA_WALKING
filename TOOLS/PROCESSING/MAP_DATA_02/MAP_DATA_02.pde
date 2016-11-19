@@ -39,7 +39,7 @@ void setup() {
   lats = new FloatList();
   lons = new FloatList();
   //
-  table = loadTable("20161020-gas-sensors.csv", "header");
+  table = loadTable("20161118-reg-sensors.csv", "header");
   println(table.getRowCount());
   locs = new Location[table.getRowCount()];
   for(int r=0; r<table.getRowCount(); r++) {
@@ -127,7 +127,7 @@ void draw() {
     float s = map(table.getFloat(i,gasMQ135),50,200,0,60);
     fill(138,250,52);
     noStroke();
-    ellipse(pos1.x, pos1.y, s, s);
+    //ellipse(pos1.x, pos1.y, s, s);
   }
 }
 
