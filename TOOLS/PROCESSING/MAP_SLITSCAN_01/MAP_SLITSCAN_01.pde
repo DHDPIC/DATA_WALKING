@@ -32,6 +32,8 @@ color[] cols;
 
 Table table;
 
+Boolean plot = false;
+
 void setup() {
   //
   size(1280, 900);
@@ -43,8 +45,8 @@ void setup() {
   lats = new FloatList();
   lons = new FloatList();
   //
-  table = loadTable("data2016_10_27_16_15_20_0.csv");
-  println(table.getRowCount());
+  table = loadTable("data2016_11_24_14_56_3_0.csv");
+  println(table.getColumnCount());
   locs = new Location[table.getRowCount()];
   cols = new color[table.getRowCount()];
   for (int r=0; r<table.getRowCount (); r++) {
@@ -56,7 +58,7 @@ void setup() {
     Location l = new Location(lat, lon);
     locs[r] = l;
     String s = table.getString(r, rowCol);
-    println(s);
+    //println(s);
     s = s.substring(1);
     cols[r] = color(unhex("FF"+s));
   }
@@ -67,21 +69,43 @@ void setup() {
 
 void draw() {
   //
-  map.draw();
+
   // PLOT A ROUTE
-  for (int i=1; i<locs.length; i+=1) {
-    ScreenPosition pos1 = map.getScreenPosition(locs[i-1]);
-    ScreenPosition pos2 = map.getScreenPosition(locs[i]);
-    //stroke(255,0,0);
-    stroke(cols[i]);
-    line(pos1.x, pos1.y, pos2.x, pos2.y);
-    //line(i, 0, i, 50);
+  if (!plot) {
+    map.draw();
+    for (int i=1; i<locs.length; i+=1) {
+      ScreenPosition pos1 = map.getScreenPosition(locs[i-1]);
+      ScreenPosition pos2 = map.getScreenPosition(locs[i]);
+      stroke(255, 0, 0);
+      line(pos1.x, pos1.y, pos2.x, pos2.y);
+    }
+  } else {
+    background(0);
+    for (int i=1; i<locs.length; i+=1) {
+      ScreenPosition pos1 = map.getScreenPosition(locs[i-1]);
+      ScreenPosition pos2 = map.getScreenPosition(locs[i]);
+      //stroke(255,0,0);
+      for (int x=0; x<89; x++) {
+        //stroke(cols[i]);
+
+        String s = table.getString(i, rowCol+x);
+        s = s.substring(1);
+        color c = color(unhex("FF"+s));
+
+        stroke(c);
+        line(pos1.x, pos1.y+x, pos2.x, pos2.y+x);
+      }
+    }
   }
 }
 
 void keyPressed() {
   if (key=='r' || key=='R') {
     saveFrame("fr-####.tiff");
+  }
+
+  if (key=='p' || key=='P') {
+    plot = !plot;
   }
 }
 
