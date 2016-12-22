@@ -39,7 +39,7 @@ void setup() {
   lats = new FloatList();
   lons = new FloatList();
   //
-  table = loadTable("20161118-reg-sensors.csv", "header");
+  table = loadTable("20160420.csv", "header");
   println(table.getRowCount());
   locs = new Location[table.getRowCount()];
   for(int r=0; r<table.getRowCount(); r++) {
