@@ -44,6 +44,8 @@ void setup() {
   //
   fill(250,138,52);
   noStroke();
+  // set map to london
+  map.zoomAndPanTo(10, new Location(51.5f, -0.118f));
 }
 
 void draw() {
