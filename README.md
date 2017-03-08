@@ -41,7 +41,7 @@ All the data and photographs are gathered and shared freely here on github.
 ##### All Photos
 * I have created a zip of all photos, they are in one folder with 3 letter month prefix and original file name intact eg. MAR-IMG_1348.JPG.
 * There is also a csv file listing all the images and their time and GPS latitude & longitude files data.
-* If you would like this zip then please message me and I can trasfer you the file or alternatively download the whole github repository as detailed above where photos are included. I will try to post this onto a google drive  asap.
+* If you would like this zip (3GB) then please message me and I can trasfer you the file or alternatively download the whole github repository as detailed above where photos are included. I will try to post this onto a google drive asap.
 
 Please use the data to create visualisations, maps, artistic responses, and even tools in the creation of more creative outcomes using data. Let us know what you come up with and we can try to include it in the project publication!
 
