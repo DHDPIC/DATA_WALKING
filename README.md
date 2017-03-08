@@ -18,13 +18,14 @@ Following the completion of the book there will be a launch and exhibition event
 
 Data Walking is a research project by [David Hunter](http://davidhunterdesign.com), funded by the [Ravensbourne Research Office](https://www.ravensbourne.ac.uk/research/).
 
+
 ---
 
 ### DATA:
 All the data and photographs are gathered and shared freely here on github.
 
 ##### Download Everything
-* You can download the whole lot to your machine using the _'clone or download'_ button and download the zip.
+* You can download the whole lot to your machine using the _'clone or download'_ button and _'download the zip'_.
 
 ##### Individual Files
 * If you want an individual file, navigate to the file, press the _'raw'_ button and you can save the page in your browser (in this case most likely a csv file).
@@ -32,11 +33,11 @@ All the data and photographs are gathered and shared freely here on github.
 ##### All Sensor Data
 * Navigate to _WALKS>ALL-DATA_ and there are three files accounting for: 
 
-   merged environmental data (light, sound, temperature)
+   Merged environmental data (light, sound, temperature)
 
-   merged air quality (MQ135, MQ2, dust sensor)
+   Merged air quality (MQ135, MQ2, dust sensor)
 
-   merged people (number of people counted in a specific location along the walk) 
+   Merged people (number of people counted in a specific location along the walk) 
 
 ##### All Photos
 * I have created a zip of all photos, they are in one folder with 3 letter month prefix and original file name intact eg. MAR-IMG_1348.JPG.
@@ -44,6 +45,7 @@ All the data and photographs are gathered and shared freely here on github.
 * If you would like this zip (3GB) then please message me and I can trasfer you the file or alternatively download the whole github repository as detailed above where photos are included. I will try to post this onto a google drive asap.
 
 Please use the data to create visualisations, maps, artistic responses, and even tools in the creation of more creative outcomes using data. Let us know what you come up with and we can try to include it in the project publication!
+
 
 ---
 
@@ -78,7 +80,23 @@ We have used a variety of sensors to collect data.
 * [MQ135 gas sensor](http://playground.arduino.cc/Main/MQGasSensors), which is sensitive to air quality and Benzene, Alcohol, smoke.
 * [MQ2 gas sensor](http://playground.arduino.cc/Main/MQGasSensors), which is sensitive to combustible gases, Methane, Butane, LPG, smoke.
 * [Shinyei Model PPD42NS Dust Sensor](http://wiki.seeed.cc/Grove-Dust_Sensor/).
-* Photographs were taken on a iPhone 4S and iPhone 6
+* [Adafruit GPS shield](https://www.adafruit.com/product/1272)
+* Photographs were taken on an iPhone 4S and iPhone 6
+
+
+---
+
+### TOOLS
+There is a tools folder which contains code for [Arduino](https://www.arduino.cc/) and [Processing](https://www.processing.org/) sketches so you can gather your own data and visualise it.
+
+With the Arduino sketches there are different ones for different sensors. Be sure to check everything is wired correctly so the correct data is written to the SD card and please note not all the sketches write data in the order that appears in github. Libraries for using the Adafruit GPS and SD shield are included and necessary.
+
+We are using version 2 of Processing as we make use of the [Unfolding Maps](http://unfoldingmaps.org/) library by Til Nagel. This library is heavily used to map the data using the GPS latitude and longitude data. There are example sketches to map all the data collected. Feel free to use and adapt these scripts to create your own outcomes or just simply to acquaint yourself with the data. There is also a sketch to graph data too, animate the routes taken, render data to a pdf, and some special experiments like rendering Gieger counter data or working with a custom slitscanning application.
+
+There is also a text file containing the command to take a folder of images and extract the time, date, and GPS data and create a csv file of the data. This is done using [ExifTool](http://www.sno.phy.queensu.ca/~phil/exiftool/) by Phil Harvey, which you will need to download and install.
+
+Of course you are free to use whatever tools you are comfortable or keen on experimenting with to gather and visualise data!
+
 
 ---
 
