@@ -156,8 +156,6 @@ void setup() {
 
 void loop() {
   
-  //Serial.println(sound);
-  
   if(digitalRead(buttonPin) == LOW) {
     if(pressed == false) {
     people++;
@@ -168,7 +166,7 @@ void loop() {
     pressed = false;
   }
   //Serial.println(people);
-  //Serial.println(peopleTotal);
+  Serial.println(peopleTotal);
 
   // if a sentence is received, we can check the checksum, parse it...
   if (GPS.newNMEAreceived()) {

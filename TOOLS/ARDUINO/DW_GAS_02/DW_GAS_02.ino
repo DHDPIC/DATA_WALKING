@@ -47,12 +47,9 @@ File logfile;
 int gaspin0 = 0;
 
 float gas0 = 0;
-float gas1 = 0;
 
 float gas0av = 0;
-float gas1av = 0;
 float gas0pk = 0;
-float gas1pk = 0;
 
 int inc = 0;
 
@@ -205,6 +202,7 @@ void loop() {
     
     //Serial.println(day);
     
+    // divide accumulated data to make average
     gas0av /= inc;
     
     char *stringptr = GPS.lastNMEA();

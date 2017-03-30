@@ -4,8 +4,6 @@
 #include <SD.h>
 #include <avr/sleep.h>
 
-//#include "DHT.h"
-
 // USING TWO ARDUINOS WITH TX RX COMMS TO GET PARTICLES DATA
 
 // Ladyada's logger modified by Bill Greiman to use the SdFat library
@@ -38,10 +36,6 @@ void useInterrupt(boolean); // Func prototype keeps Arduino 0023 happy
 // Set the pins used
 #define chipSelect 10
 #define ledPin 13
-//#define DHTPIN 2     // what pin we're connected to
-//#define DHTTYPE DHT22   // DHT 22  (AM2302)
-//#define data
-//DHT dht(DHTPIN, DHTTYPE);
 
 File logfile;
 
@@ -151,12 +145,9 @@ void setup() {
   useInterrupt(true);
   Serial.println("go");
 
-  //dht.begin();
 }
 
 void loop() {
-  //float h = dht.readHumidity();
-  //float t = dht.readTemperature();
   
   // get values
   int n = analogRead(3);
@@ -167,7 +158,7 @@ void loop() {
   soundInc++;
   soundPek = max(soundPek, sound);
   
-  //Serial.println(sound);
+  Serial.println(sound);
 
   // if a sentence is received, we can check the checksum, parse it...
   if (GPS.newNMEAreceived()) {
