@@ -1,0 +1,15 @@
+CO2
+Correlation function coefficients
+Estimated a
+  109.9727
+Estimated b
+  -2.776167
+> 
+
+CO
+Correlation function coefficients
+Estimated a
+  707.5053
+Estimated b
+  -4.490457
+>
