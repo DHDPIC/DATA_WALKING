@@ -1,5 +1,5 @@
-exiftool -csv -filename -gps:GPSLatitude -gps:GPSLongitude ./ > fetcheddata.csv
+decimal gps with image direction, copy the line below:
+exiftool -csv -filename -datetimeoriginal -gpslatitude -gpslongitude -gpsimgdirection -n ./ > data.csv
 
-decimal gps:
-
-exiftool -csv -filename -datetimeoriginal -gpslatitude -gpslongitude -n ./ > data2.csv
+with direction of image and altitude, copy the line below:
+exiftool -csv -filename -datetimeoriginal -gpslatitude -gpslongitude -gpsimgdirection -gpsaltitude -n ./ > datanew.csv

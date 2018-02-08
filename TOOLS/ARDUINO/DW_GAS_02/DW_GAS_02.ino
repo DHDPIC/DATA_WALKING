@@ -222,7 +222,7 @@ void loop() {
     logfile.println("");
     if (strstr(stringptr, "RMC") || strstr(stringptr, "GGA"))   logfile.flush();
     //
-    //Serial.println(light);
+    Serial.println(gas0);
     // reset vars
     inc = 0;
     gas0av = 0;
