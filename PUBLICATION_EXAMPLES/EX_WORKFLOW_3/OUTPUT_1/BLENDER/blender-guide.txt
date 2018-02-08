@@ -1,0 +1,39 @@
+Make height map- - -
+user preferences > add ons > import images as planes
+import > image as planes
+select plane
+[tab] to enter edit mode
+Tools menu: Subdivide: number of cuts =  300
+Modifiers menu: add modifier > Displace
+set texture to your heatmap
+set texture coords > uv
+(experiment with Strength parameter if you like)
+apply
+
+
+Give it a base- - -
+[tab] to enter edit mode
+[a] select all
+extrude: [e] [z] drag down or [shift]+[arrow]
+set all those vertices to same value: [s] [z] [0]
+[n] to launch side panel
+set z median to value you want (try -0.5)
+
+
+Set units and size- - -
+Scene menu: Units > millimetres (or your preferred units)
+[tab] to enter object mode
+[n] to launch Transform panel
+Transform: Dimensions = whatever size you want
+
+Give it a thickness- - -
+Modifiers menu: add modifier > Solidify
+
+
+Export to .stl- - -
+File > Export > Stl
+
+Tutorials:
+http://johnflower.org/tutorial/make-mountains-blender-height-maps
+https://blender.stackexchange.com/questions/60993/creating-a-3d-printable-terrain-model-with-blender
+https://blender.stackexchange.com/questions/31367/how-to-set-object-dimension
