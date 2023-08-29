@@ -157,7 +157,42 @@ textarea {
     transition-duration: 0s;
   }
 
-  
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
+  #count4:active {
+    background-color: #80b1d3;
+    transition-duration: 0s;
+  }
 
 
   
@@ -197,6 +232,42 @@ textarea {
 
   .number-tracker {
     color: #C97CF7;
+  }
+
+  #countNumberTracker1 {
+    color: #c97cf7;
+  }
+
+  #countNumberTracker2 {
+    color: #ffffb3;
+  }
+
+  #countNumberTracker3 {
+    color: #fb8072;
+  }
+
+  #countNumberTracker4 {
+    color: #80b1d3;
+  }
+
+  #countNumberTracker5 {
+    color: #fdb462;
+  }
+
+  #countNumberTracker6 {
+    color: #fccde5;
+  }
+
+  #countNumberTracker7 {
+    color: #bebada;
+  }
+
+  #countNumberTracker8 {
+    color: #ffed6f;
+  }
+
+  #countNumberTracker9 {
+    color: #ccebc5;
   }
 
   #shield {

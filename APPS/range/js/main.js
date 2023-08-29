@@ -22,8 +22,8 @@ map.on('load', function () {
     'source': 'points',
     paint: {
       'circle-color': '#C97CF7',
-      'circle-radius': 4,
-      'circle-stroke-width': 1,
+      'circle-radius': ["abs",["+",["get", "range_value"],1]],
+      'circle-stroke-width': 2,
       'circle-stroke-color': '#fff'
     }
   });

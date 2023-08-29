@@ -1,135 +1,166 @@
 // initialise mapbox
-mapboxgl.accessToken = 'pk.eyJ1IjoiZGhkcGljIiwiYSI6IkZfUEVoTUUifQ.rNj-tr8788GTdoGnyMEtAQ';
-    var map = new mapboxgl.Map({
-container: 'map', // container ID
-style: 'mapbox://styles/dhdpic/ckny7kaku1c8617pnlfatzqpz', // style URL
+mapboxgl.accessToken =
+  "pk.eyJ1IjoiZGhkcGljIiwiYSI6IkZfUEVoTUUifQ.rNj-tr8788GTdoGnyMEtAQ";
+var map = new mapboxgl.Map({
+  container: "map", // container ID
+  style: "mapbox://styles/dhdpic/ckny7kaku1c8617pnlfatzqpz", // style URL
 
-center: [-0.12, 51.51], // starting position [lng, lat]
-zoom: 9 // starting zoom
-
+  center: [-0.12, 51.51], // starting position [lng, lat]
+  zoom: 9, // starting zoom
 });
 
-map.on('load', function () {
-  map.addSource('points', {
-    'type': 'geojson',
-    'data': myJson
-
-});
-// Add a symbol layer
-  map.addLayer({
-    'id': 'points',
-    'type': 'circle',
-    'source': 'points',
-    paint: {
-      'circle-color': '#C97CF7',
-      'circle-radius': 4,
-      'circle-stroke-width': 1,
-      'circle-stroke-color': '#fff'
-    }
+map.on("load", function () {
+  map.addSource("points", {
+    type: "geojson",
+    data: myJson,
   });
-
+  // Add a symbol layer
+  map.addLayer({
+    id: "points",
+    type: "circle",
+    source: "points",
+    paint: {
+      //'circle-color': '#C97CF7',
+      "circle-color": [
+        "match",
+        ["get", "button_id"],
+		0,
+		"#c97cf7",
+        1,
+		"#ffffb3",
+        2,
+        "#fb8072",
+        3,
+        "#80b1d3",
+        4,
+        "#fdb462",
+		5,
+        "#fccde5",
+		6,
+		"#bebada",
+		7,
+        "#ffed6f",
+		8,
+        "#ccebc5",
+		/* other */ '#ccc'
+      ],
+      "circle-radius": 8,
+      "circle-stroke-width": 2,
+      "circle-stroke-color": "#fff",
+    },
+  });
 });
 
 var myJson = {
-    type: "FeatureCollection",
-    features: []
+  type: "FeatureCollection",
+  features: [],
 };
 
-function createJson(id, button_id, button_label, count, latitude, longitude, altitude, timestamp, iso_date, time) {
-	console.log("blah blah json");
-	//
-	if(altitude === null) {
-	myJson.features.push({
-	  "type": "Feature",
-	  "properties":{
-	  	"id":id,
-	  	"button_id":button_id,
-	  	"button_label":button_label,
-	  	"count": count,
-	  	"timestamp": timestamp,
-	  	"iso-date": iso_date,
-	  	"time": time
-
-	  },
-	  "geometry": {
-	    "type": "Point",
-	    "coordinates": [currPosition.coords.longitude, currPosition.coords.latitude]
-	  }
-	});
-
-	} else {
-
-	//
-	myJson.features.push({
-	  "type": "Feature",
-	  "properties":{
-	  	"id":id,
-	  	"button_id":button_id,
-	  	"button_label":button_label,
-	  	"count": count,
-	  	"timestamp": timestamp,
-	  	"iso-date": iso_date,
-	  	"time": time
-
-	  },
-	  "geometry": {
-	    "type": "Point",
-	    "coordinates": [currPosition.coords.longitude, currPosition.coords.latitude, currPosition.coords.altitude]
-	  }
-	});
-}
-//
-console.log(myJson);
+function createJson(
+  id,
+  button_id,
+  button_label,
+  count,
+  latitude,
+  longitude,
+  altitude,
+  timestamp,
+  iso_date,
+  time
+) {
+  console.log("blah blah json");
+  //
+  if (altitude === null) {
+    myJson.features.push({
+      type: "Feature",
+      properties: {
+        id: id,
+        button_id: button_id,
+        button_label: button_label,
+        count: count,
+        timestamp: timestamp,
+        "iso-date": iso_date,
+        time: time,
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [
+          currPosition.coords.longitude,
+          currPosition.coords.latitude,
+        ],
+      },
+    });
+  } else {
+    //
+    myJson.features.push({
+      type: "Feature",
+      properties: {
+        id: id,
+        button_id: button_id,
+        button_label: button_label,
+        count: count,
+        timestamp: timestamp,
+        "iso-date": iso_date,
+        time: time,
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [
+          currPosition.coords.longitude,
+          currPosition.coords.latitude,
+          currPosition.coords.altitude,
+        ],
+      },
+    });
+  }
+  //
+  console.log(myJson);
 }
 
 function mapJson() {
-	map.getSource('points').setData(myJson);
-  	//
-  	var bounds = new mapboxgl.LngLatBounds();
+  map.getSource("points").setData(myJson);
+  //
+  var bounds = new mapboxgl.LngLatBounds();
 
-  	myJson.features.forEach(function(feature) {
-    	bounds.extend(feature.geometry.coordinates);
-    	console.log(feature);
-	});
+  myJson.features.forEach(function (feature) {
+    bounds.extend(feature.geometry.coordinates);
+    console.log(feature);
+  });
 
-	map.fitBounds(bounds);
+  map.fitBounds(bounds);
 }
 
 function exportJson() {
-  
   console.log("export geojson...");
   console.log(myJson);
 
   // Convert object to Blob
-  const blobData = new Blob(
-      [ JSON.stringify(myJson, undefined, 2) ], 
-      { type: 'text/json;charset=utf-8' }
-  )
-  
+  const blobData = new Blob([JSON.stringify(myJson, undefined, 2)], {
+    type: "text/json;charset=utf-8",
+  });
+
   // Convert Blob to URL
   const blobUrl = URL.createObjectURL(blobData);
-  
+
   // Create an a element with blobl URL
-  const anchor = document.createElement('a');
+  const anchor = document.createElement("a");
   anchor.href = blobUrl;
   anchor.target = "_self";
   anchor.download = "datawalking.geojson";
-  
+
   // Auto click on a element, trigger the file download
   anchor.click();
-  
+
   // Don't forget ;)
   URL.revokeObjectURL(blobUrl);
-
 }
 
 function exportJson2() {
+  console.log("export geojson new way 2...");
+  console.log(myJson);
 
-	console.log("export geojson new way 2...");
-  	console.log(myJson);
-
-  	console.log("save the date...")
-  	/*
+  console.log("save the date...");
+  /*
 	let saveDate = new Date();
 	let yr = currDate.getFullYear();
 	let mo = currDate.getMonth()+1;
@@ -143,26 +174,25 @@ function exportJson2() {
 	if (mn<10) { mn = '0'+mn;}
 	if (sc<10) { sc = '0'+sc;}
 	*/
-	//
-	let dateStr = getSaveDate();//yr+"-"+mo+"-"+dt+"-"+hr+"-"+mn+"-"+sc;
+  //
+  let dateStr = getSaveDate(); //yr+"-"+mo+"-"+dt+"-"+hr+"-"+mn+"-"+sc;
 
   // Convert object to Blob
-  const blobData = new Blob(
-      [ JSON.stringify(myJson, undefined, 2) ], 
-      { type: 'text/json;charset=utf-8' }
-  )
+  const blobData = new Blob([JSON.stringify(myJson, undefined, 2)], {
+    type: "text/json;charset=utf-8",
+  });
 
   //
   var reader = new FileReader();
-  reader.onload = function() {
+  reader.onload = function () {
     var popup = window.open();
-    var link = document.createElement('a');
-    link.setAttribute('href', reader.result);
-    link.setAttribute('download', 'datawalking-'+dateStr+'.geojson');
-    popup.document.body.appendChild(link); 
+    var link = document.createElement("a");
+    link.setAttribute("href", reader.result);
+    link.setAttribute("download", "datawalking-" + dateStr + ".geojson");
+    popup.document.body.appendChild(link);
     link.click();
-  }
-  reader.readAsDataURL(blobData); 
+  };
+  reader.readAsDataURL(blobData);
   /*
   // Convert Blob to URL
   const blobUrl = URL.createObjectURL(blobData);
@@ -182,25 +212,32 @@ function exportJson2() {
 }
 
 function getSaveDate() {
-
-	let saveDate = new Date();
-	let yr = currDate.getFullYear();
-	let mo = currDate.getMonth()+1;
-	let dt = currDate.getDate();
-	let hr = currDate.getHours();
-	let mn = currDate.getMinutes();
-	let sc = currDate.getSeconds();
-	//
-	if (mo<10) { mo = '0'+mo;}
-	if (dt<10) { dt = '0'+dt;}
-	if (hr<10) { hr = '0'+hr;}
-	if (mn<10) { mn = '0'+mn;}
-	if (sc<10) { sc = '0'+sc;}
-	//
-	return yr+"-"+mo+"-"+dt+"-"+hr+"-"+mn+"-"+sc;
-
+  let saveDate = new Date();
+  let yr = currDate.getFullYear();
+  let mo = currDate.getMonth() + 1;
+  let dt = currDate.getDate();
+  let hr = currDate.getHours();
+  let mn = currDate.getMinutes();
+  let sc = currDate.getSeconds();
+  //
+  if (mo < 10) {
+    mo = "0" + mo;
+  }
+  if (dt < 10) {
+    dt = "0" + dt;
+  }
+  if (hr < 10) {
+    hr = "0" + hr;
+  }
+  if (mn < 10) {
+    mn = "0" + mn;
+  }
+  if (sc < 10) {
+    sc = "0" + sc;
+  }
+  //
+  return yr + "-" + mo + "-" + dt + "-" + hr + "-" + mn + "-" + sc;
 }
-
 
 // variables for geo, time, buttons, data
 var geoEnabled = document.getElementById("geo-enabled");
@@ -215,7 +252,18 @@ var exportCSVBtn = document.getElementById("exportCSV");
 var exportGeoJsonBtn = document.getElementById("exportGeoJson");
 
 var id = 0;
-var dataHead = ["id", "button_id", "label", "count","latitude","longitude","altitude", "timestamp", "iso-date", "time"];
+var dataHead = [
+  "id",
+  "button_id",
+  "label",
+  "count",
+  "latitude",
+  "longitude",
+  "altitude",
+  "timestamp",
+  "iso-date",
+  "time",
+];
 var dataArr = [dataHead];
 
 var countBtn1 = document.getElementById("count1");
@@ -288,7 +336,7 @@ buttonLabel9.value = countBtn9.innerHTML;
 buttonLabel9.style.visibility = "hidden";
 
 // array to store counts
-var countArr = [0,0,0,0,0,0,0,0,0];
+var countArr = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 
 // storing button id values
 countBtn1.value = 0;
@@ -301,30 +349,49 @@ countBtn7.value = 6;
 countBtn8.value = 7;
 countBtn9.value = 8;
 
-var buttonArr = [countBtn1,countBtn2,countBtn3,countBtn4,countBtn5,countBtn6,countBtn7,countBtn8,countBtn9]
-var countTrackerArr = [countTracker1,countTracker2,countTracker3,countTracker4,countTracker5,countTracker6,countTracker7,countTracker8,countTracker9]
+var buttonArr = [
+  countBtn1,
+  countBtn2,
+  countBtn3,
+  countBtn4,
+  countBtn5,
+  countBtn6,
+  countBtn7,
+  countBtn8,
+  countBtn9,
+];
+var countTrackerArr = [
+  countTracker1,
+  countTracker2,
+  countTracker3,
+  countTracker4,
+  countTracker5,
+  countTracker6,
+  countTracker7,
+  countTracker8,
+  countTracker9,
+];
 
 //trigger location
 function getLocation() {
-	console.log("trying to get geolocation enabled");
+  console.log("trying to get geolocation enabled");
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(showPosition, failPosition);
     navigator.geolocation.watchPosition(trackPosition);
     console.log("geo location enabled");
   } else {
-  	console.log("geo location failed");
+    console.log("geo location failed");
     geoEnabled.innerHTML = "Geolocation is not supported by this browser.";
-    
   }
 }
 
 function failPosition(error) {
-	if(error.code == error.PERMISSION_DENIED) {
-	console.log("geolocation access denied");
-	// you could hide elements, but currently covered by the shield
-	} else {
-		console.log("other error");
-	}
+  if (error.code == error.PERMISSION_DENIED) {
+    console.log("geolocation access denied");
+    // you could hide elements, but currently covered by the shield
+  } else {
+    console.log("other error");
+  }
 }
 
 function showPosition(position) {
@@ -341,94 +408,125 @@ function showPosition(position) {
 }
 
 function trackPosition(position) {
-	currPosition = position;
+  currPosition = position;
 }
 
-
 function countPress() {
-	//
-	/* geoEnabled.innerHTML = "Geolocation enabled! At " + currPosition.coords.timestamp + " time:" +
+  //
+  /* geoEnabled.innerHTML = "Geolocation enabled! At " + currPosition.coords.timestamp + " time:" +
   "<br>Latitude: " + currPosition.coords.latitude +
   "<br>Longitude: " + currPosition.coords.longitude +
   "<br>Altitude: " + currPosition.coords.altitude; */
-	//
-	currDate = new Date();
-	let yr = currDate.getFullYear();
-	let mo = currDate.getMonth()+1;
-	let dt = currDate.getDate();
-	let hr = currDate.getHours();
-	let mn = currDate.getMinutes();
-	let sc = currDate.getSeconds();
-	//
-	if (mo<10) { mo = '0'+mo;}
-	if (dt<10) { dt = '0'+dt;}
-	if (hr<10) { hr = '0'+hr;}
-	if (mn<10) { mn = '0'+mn;}
-	if (sc<10) { sc = '0'+sc;}
-	//
-	id++;
-	//this.value++;
-	//countTrack1.innerHTML = this.value;
-	countArr[this.value]++;
-	var v = countArr[this.value];
+  //
+  currDate = new Date();
+  let yr = currDate.getFullYear();
+  let mo = currDate.getMonth() + 1;
+  let dt = currDate.getDate();
+  let hr = currDate.getHours();
+  let mn = currDate.getMinutes();
+  let sc = currDate.getSeconds();
+  //
+  if (mo < 10) {
+    mo = "0" + mo;
+  }
+  if (dt < 10) {
+    dt = "0" + dt;
+  }
+  if (hr < 10) {
+    hr = "0" + hr;
+  }
+  if (mn < 10) {
+    mn = "0" + mn;
+  }
+  if (sc < 10) {
+    sc = "0" + sc;
+  }
+  //
+  id++;
+  //this.value++;
+  //countTrack1.innerHTML = this.value;
+  countArr[this.value]++;
+  var v = countArr[this.value];
 
-	var currArr = [id, Number(this.value), this.innerHTML, v, currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc ];
-	dataArr.push(currArr);
-	//
-	console.log(dataArr);
-	//
-	countTrackerArr[this.value].innerHTML = v;
-	//
-	dataReadOut.innerHTML = currArr;
+  var currArr = [
+    id,
+    Number(this.value),
+    this.innerHTML,
+    v,
+    currPosition.coords.latitude,
+    currPosition.coords.longitude,
+    currPosition.coords.altitude,
+    currPosition.coords.timestamp,
+    yr + "-" + mo + "-" + dt,
+    hr + ":" + mn + ":" + sc,
+  ];
+  dataArr.push(currArr);
+  //
+  console.log(dataArr);
+  //
+  countTrackerArr[this.value].innerHTML = v;
+  //
+  dataReadOut.innerHTML = currArr;
 
-	createJson(id, Number(this.value), this.innerHTML, v, currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
-	mapJson();
+  createJson(
+    id,
+    Number(this.value),
+    this.innerHTML,
+    v,
+    currPosition.coords.latitude,
+    currPosition.coords.longitude,
+    currPosition.coords.altitude,
+    currPosition.coords.timestamp,
+    yr + "-" + mo + "-" + dt,
+    hr + ":" + mn + ":" + sc
+  );
+  mapJson();
 }
 
 function resetData() {
-	//
-	id = 0;
-	dataArr = [dataHead];
-	countArr = [0,0,0,0,0,0,0,0,0];
-countTracker1.innerHTML = 0;
-countTracker2.innerHTML = 0;
-countTracker3.innerHTML = 0;
-countTracker4.innerHTML = 0;
-countTracker5.innerHTML = 0;
-countTracker6.innerHTML = 0;
-countTracker7.innerHTML = 0;
-countTracker8.innerHTML = 0;
-countTracker9.innerHTML = 0;
-	//
-// reset json
-	myJson = {
+  //
+  id = 0;
+  dataArr = [dataHead];
+  countArr = [0, 0, 0, 0, 0, 0, 0, 0, 0];
+  countTracker1.innerHTML = 0;
+  countTracker2.innerHTML = 0;
+  countTracker3.innerHTML = 0;
+  countTracker4.innerHTML = 0;
+  countTracker5.innerHTML = 0;
+  countTracker6.innerHTML = 0;
+  countTracker7.innerHTML = 0;
+  countTracker8.innerHTML = 0;
+  countTracker9.innerHTML = 0;
+  //
+  // reset json
+  myJson = {
     type: "FeatureCollection",
-    features: []
-	};
-	//
-	console.log(dataArr);
+    features: [],
+  };
+  //
+  console.log(dataArr);
 }
 
 function exportCSV() {
-	let csvContent = "data:text/csv;charset=utf-8,";
+  let csvContent = "data:text/csv;charset=utf-8,";
 
-	dataArr.forEach(function(rowArr) {
-		let row = rowArr.join(",");
-		csvContent += row + "\r\n";
-	});
+  dataArr.forEach(function (rowArr) {
+    let row = rowArr.join(",");
+    csvContent += row + "\r\n";
+  });
 
-	var encodedUri = encodeURI(csvContent);
-	window.open(encodedUri);
+  var encodedUri = encodeURI(csvContent);
+  window.open(encodedUri);
 }
 
 function exportCSV2() {
-	let csvContent;// = "data:text/csv;charset=utf-8,";
+  let csvContent; // = "data:text/csv;charset=utf-8,";
 
-	dataArr.forEach(function(rowArr) {
-		let row = rowArr.join(",");
-		csvContent += row + "\r\n";
-	});
-/*
+  dataArr.forEach(function (rowArr) {
+    let row = rowArr.join(",");
+    csvContent += row + "\r\n";
+  });
+  /*
 	var encodedUri = encodeURI(csvContent);
 	var link = document.createElement("a");
 	link.setAttribute("href", encodedUri);
@@ -437,88 +535,82 @@ function exportCSV2() {
 
 	link.click(); // This will download the data file named "my_data.csv".
 */
-	//
-	let dateStr = getSaveDate();
-	// Convert object to Blob
-  const blobData = new Blob(
-      [ csvContent ], 
-      { type: 'text/csv;charset=utf-8' }
-  )
+  //
+  let dateStr = getSaveDate();
+  // Convert object to Blob
+  const blobData = new Blob([csvContent], { type: "text/csv;charset=utf-8" });
 
   //
   var reader = new FileReader();
-  reader.onload = function() {
+  reader.onload = function () {
     var popup = window.open();
-    var link = document.createElement('a');
-    link.setAttribute('href', reader.result);
-    link.setAttribute('download', 'datawalking-'+dateStr+'.csv');
-    popup.document.body.appendChild(link); 
+    var link = document.createElement("a");
+    link.setAttribute("href", reader.result);
+    link.setAttribute("download", "datawalking-" + dateStr + ".csv");
+    popup.document.body.appendChild(link);
     link.click();
-  }
+  };
   reader.readAsDataURL(blobData);
 }
 
-
-
 function editPress() {
-	currEdit = !currEdit;
-	if(currEdit) {
+  currEdit = !currEdit;
+  if (currEdit) {
+    editBtn.innerHTML = "Save";
 
-		editBtn.innerHTML = "Save";
+    buttonLabel1.style.visibility = "visible";
+    buttonLabel2.style.visibility = "visible";
+    buttonLabel3.style.visibility = "visible";
+    buttonLabel4.style.visibility = "visible";
+    buttonLabel5.style.visibility = "visible";
+    buttonLabel6.style.visibility = "visible";
+    buttonLabel7.style.visibility = "visible";
+    buttonLabel8.style.visibility = "visible";
+    buttonLabel9.style.visibility = "visible";
 
-		buttonLabel1.style.visibility = "visible";
-		buttonLabel2.style.visibility = "visible";
-		buttonLabel3.style.visibility = "visible";
-		buttonLabel4.style.visibility = "visible";
-		buttonLabel5.style.visibility = "visible";
-		buttonLabel6.style.visibility = "visible";
-		buttonLabel7.style.visibility = "visible";
-		buttonLabel8.style.visibility = "visible";
-		buttonLabel9.style.visibility = "visible";
+    countBtn1.classList.toggle("inactive-button");
+    countBtn2.classList.toggle("inactive-button");
+    countBtn3.classList.toggle("inactive-button");
+    countBtn4.classList.toggle("inactive-button");
+    countBtn5.classList.toggle("inactive-button");
+    countBtn6.classList.toggle("inactive-button");
+    countBtn7.classList.toggle("inactive-button");
+    countBtn8.classList.toggle("inactive-button");
+    countBtn9.classList.toggle("inactive-button");
+  } else {
+    editBtn.innerHTML = "Edit";
 
-		countBtn1.classList.toggle("inactive-button");
-		countBtn2.classList.toggle("inactive-button");
-		countBtn3.classList.toggle("inactive-button");
-		countBtn4.classList.toggle("inactive-button");
-		countBtn5.classList.toggle("inactive-button");
-		countBtn6.classList.toggle("inactive-button");
-		countBtn7.classList.toggle("inactive-button");
-		countBtn8.classList.toggle("inactive-button");
-		countBtn9.classList.toggle("inactive-button");
-	} else {
-		editBtn.innerHTML = "Edit";
+    buttonLabel1.style.visibility = "hidden";
+    countBtn1.innerHTML = buttonLabel1.value;
+    buttonLabel2.style.visibility = "hidden";
+    countBtn2.innerHTML = buttonLabel2.value;
+    buttonLabel3.style.visibility = "hidden";
+    countBtn3.innerHTML = buttonLabel3.value;
 
-		buttonLabel1.style.visibility = "hidden";
-		countBtn1.innerHTML = buttonLabel1.value;
-		buttonLabel2.style.visibility = "hidden";
-		countBtn2.innerHTML = buttonLabel2.value;
-		buttonLabel3.style.visibility = "hidden";
-		countBtn3.innerHTML = buttonLabel3.value;
-		
-		buttonLabel4.style.visibility = "hidden";
-		countBtn4.innerHTML = buttonLabel4.value;
-		buttonLabel5.style.visibility = "hidden";
-		countBtn5.innerHTML = buttonLabel5.value;
-		buttonLabel6.style.visibility = "hidden";
-		countBtn6.innerHTML = buttonLabel6.value;
-		
-		buttonLabel7.style.visibility = "hidden";
-		countBtn7.innerHTML = buttonLabel7.value;
-		buttonLabel8.style.visibility = "hidden";
-		countBtn8.innerHTML = buttonLabel8.value;
-		buttonLabel9.style.visibility = "hidden";
-		countBtn9.innerHTML = buttonLabel9.value;
+    buttonLabel4.style.visibility = "hidden";
+    countBtn4.innerHTML = buttonLabel4.value;
+    buttonLabel5.style.visibility = "hidden";
+    countBtn5.innerHTML = buttonLabel5.value;
+    buttonLabel6.style.visibility = "hidden";
+    countBtn6.innerHTML = buttonLabel6.value;
 
-		countBtn1.classList.toggle("inactive-button");
-		countBtn2.classList.toggle("inactive-button");
-		countBtn3.classList.toggle("inactive-button");
-		countBtn4.classList.toggle("inactive-button");
-		countBtn5.classList.toggle("inactive-button");
-		countBtn6.classList.toggle("inactive-button");
-		countBtn7.classList.toggle("inactive-button");
-		countBtn8.classList.toggle("inactive-button");
-		countBtn9.classList.toggle("inactive-button");
-	}
+    buttonLabel7.style.visibility = "hidden";
+    countBtn7.innerHTML = buttonLabel7.value;
+    buttonLabel8.style.visibility = "hidden";
+    countBtn8.innerHTML = buttonLabel8.value;
+    buttonLabel9.style.visibility = "hidden";
+    countBtn9.innerHTML = buttonLabel9.value;
+
+    countBtn1.classList.toggle("inactive-button");
+    countBtn2.classList.toggle("inactive-button");
+    countBtn3.classList.toggle("inactive-button");
+    countBtn4.classList.toggle("inactive-button");
+    countBtn5.classList.toggle("inactive-button");
+    countBtn6.classList.toggle("inactive-button");
+    countBtn7.classList.toggle("inactive-button");
+    countBtn8.classList.toggle("inactive-button");
+    countBtn9.classList.toggle("inactive-button");
+  }
 }
 
 //
@@ -540,6 +632,5 @@ countBtn6.addEventListener("click", countPress);
 countBtn7.addEventListener("click", countPress);
 countBtn8.addEventListener("click", countPress);
 countBtn9.addEventListener("click", countPress);
-
 
 editBtn.addEventListener("click", editPress);

@@ -16,7 +16,7 @@ map.on('load', function () {
 
 });
 // Add a symbol layer
-  map.addLayer({
+  /*map.addLayer({
     'id': 'points',
     'type': 'circle',
     'source': 'points',
@@ -26,6 +26,30 @@ map.on('load', function () {
       'circle-stroke-width': 1,
       'circle-stroke-color': '#fff'
     }
+  });*/
+
+  // Add a symbol layer
+  map.addLayer({
+    'id': 'points',
+    'type': 'symbol',
+    'source': 'points',
+    /*paint: {
+      'circle-color': '#C97CF7',
+      'circle-radius': 4,
+      'circle-stroke-width': 1,
+      'circle-stroke-color': '#fff'
+    }*/
+	'layout': {
+		'text-field': ["get","text"],
+		'text-font': ['Apercu Bold'],
+		'text-size': 10,
+		'text-allow-overlap': true
+	},
+	'paint': {
+		'text-halo-color': '#C97CF7',
+		'text-halo-width': 0.5,
+		'text-halo-blur': 0.5
+	}
   });
 
 });
