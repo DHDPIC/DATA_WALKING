@@ -44,7 +44,7 @@ async function make() {
 
   console.log("before model");
 
-  objectDetector = await ml5.objectDetector('https://datawalking.com/apps/test/object/v4m/model.json', startDetecting);
+  objectDetector = await ml5.objectDetector('cocossd', startDetecting);
   
   canvas = createCanvas(width, height);
   ctx = canvas.getContext('2d');
@@ -116,12 +116,20 @@ function draw(){
   for (let i = 0; i < objects.length; i += 1) {
       
     ctx.font = "16px Arial";
-    ctx.fillStyle = "#27baa4";
+	if(recordData) {
+		ctx.fillStyle = "#C97CF7";
+	} else {
+    	ctx.fillStyle = "#27baa4";
+	}
     ctx.fillText(objects[i].label, objects[i].x + 4, objects[i].y + 16); 
 
     ctx.beginPath();
     ctx.rect(objects[i].x, objects[i].y, objects[i].width, objects[i].height);
-    ctx.strokeStyle = "#27baa4";
+	if(recordData) {
+		ctx.strokeStyle = "#C97CF7";
+	} else {
+    	ctx.strokeStyle = "#27baa4";
+	}
     ctx.stroke();
     ctx.closePath();
   }
@@ -202,7 +210,7 @@ var myJson = {
     features: []
 };
 
-function createJson(id, button_id, button_label, count, the_text, latitude, longitude, altitude, timestamp, iso_date, time) {
+function createJson(id, button_id, button_label, count, the_text, latitude, longitude, altitude, timestamp, iso_date, date, time) {
 	//console.log("blah blah json");
 	//
 	if(altitude === null) {
@@ -216,6 +224,7 @@ function createJson(id, button_id, button_label, count, the_text, latitude, long
 	  	"objects": the_text,
 	  	"timestamp": timestamp,
 	  	"iso-date": iso_date,
+		"date": date,
 	  	"time": time
 
 	  },
@@ -238,6 +247,7 @@ function createJson(id, button_id, button_label, count, the_text, latitude, long
 	  	"objects": the_text,
 	  	"timestamp": timestamp,
 	  	"iso-date": iso_date,
+		"date": date,
 	  	"time": time
 
 	  },
@@ -251,7 +261,7 @@ function createJson(id, button_id, button_label, count, the_text, latitude, long
 console.log(myJson);
 }
 
-function createSmallJson(id, the_text, latitude, longitude, altitude, timestamp, iso_date, time) {
+function createSmallJson(id, the_text, latitude, longitude, altitude, timestamp, iso_date, date, time) {
 	//console.log("blah blah json");
 	//
 	if(altitude === null) {
@@ -262,6 +272,7 @@ function createSmallJson(id, the_text, latitude, longitude, altitude, timestamp,
 	  	"objects": the_text,
 	  	"timestamp": timestamp,
 	  	"iso-date": iso_date,
+		"date": date,
 	  	"time": time
 
 	  },
@@ -281,6 +292,7 @@ function createSmallJson(id, the_text, latitude, longitude, altitude, timestamp,
 	  	"objects": the_text,
 	  	"timestamp": timestamp,
 	  	"iso-date": iso_date,
+		"date": date,
 	  	"time": time
 
 	  },
@@ -429,7 +441,7 @@ var exportCSVBtn = document.getElementById("exportCSV");
 var exportGeoJsonBtn = document.getElementById("exportGeoJson");
 
 var id = 0;
-var dataHead = ["id","button_id","label","count","objects","latitude","longitude","altitude", "timestamp", "iso-date", "time"];
+var dataHead = ["id","button_id","label","count","objects","latitude","longitude","altitude", "timestamp", "iso-date", "date", "time"];
 var dataArr = [dataHead];
 
 let recordTimer;
@@ -595,7 +607,7 @@ function realtimeAdd(objectArr) {
 	if (mn<10) { mn = '0'+mn;}
 	if (sc<10) { sc = '0'+sc;}
 	//
-	id++;
+	//id++;
 	//this.value++;
 	//countTrack1.innerHTML = this.value;
 	
@@ -616,12 +628,15 @@ function realtimeAdd(objectArr) {
 	// new method just make an array of the labels, don't try to make a json array for CSV
 	var objectList = [];
 	for(let i=0; i<objectArr.length; i++) {
-		objectList[i] = objectArr[i].label;
+		
+		//- production -//objectList[i] = objectArr[i].label;
+		let currArr = [id+i, Number(this.value), this.innerHTML, v, objectArr[i].label, currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc ];
+		dataArr.push(currArr);
 	}
 	
 	//
-	var currArr = [id, Number(this.value), this.innerHTML, v, "\""+objectList+"\"", currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc ];
-	dataArr.push(currArr);
+	//- production -//var currArr = [id, Number(this.value), this.innerHTML, v, "\""+objectList+"\"", currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc ];
+	//- production -//dataArr.push(currArr);
 	//
 	//? console.log(dataArr);
 	//
@@ -641,9 +656,12 @@ function realtimeAdd(objectArr) {
 	// use  only parts of json object and rewrap as json
 	var reducedJSON = [];
 	for(let i=0; i<objectArr.length; i++) {
-		reducedJSON[i] = {"label": objectArr[i].label, "confidence": objectArr[i].confidence.toFixed(3)};
+		//- production -//reducedJSON[i] = {"label": objectArr[i].label, "confidence": objectArr[i].confidence.toFixed(3)};
+		let indiJSON =  {"label": objectArr[i].label, "confidence": objectArr[i].confidence.toFixed(3)};
+		createSmallJson(id, indiJSON, currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
+		id++;
 	}
-	createSmallJson(id, reducedJSON, currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
+	//- production -//createSmallJson(id, reducedJSON, currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
 
 	// no longer adding map
 	//mapJson();

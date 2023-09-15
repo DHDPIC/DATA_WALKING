@@ -66,25 +66,27 @@ function createJson(
   altitude,
   timestamp,
   iso_date,
+  date,
   time
 ) {
   console.log("blah blah json");
   //
   if (altitude === null) {
     myJson.features.push({
-      type: "Feature",
-      properties: {
-        id: id,
-        button_id: button_id,
-        button_label: button_label,
-        count: count,
-        timestamp: timestamp,
+      "type": "Feature",
+      "properties": {
+        "id": id,
+        "button_id": button_id,
+        "button_label": button_label,
+        "count": count,
+        "timestamp": timestamp,
         "iso-date": iso_date,
-        time: time,
+        "date": date,
+        "time": time,
       },
-      geometry: {
-        type: "Point",
-        coordinates: [
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           currPosition.coords.longitude,
           currPosition.coords.latitude,
         ],
@@ -93,19 +95,20 @@ function createJson(
   } else {
     //
     myJson.features.push({
-      type: "Feature",
-      properties: {
-        id: id,
-        button_id: button_id,
-        button_label: button_label,
-        count: count,
-        timestamp: timestamp,
+      "type": "Feature",
+      "properties": {
+        "id": id,
+        "button_id": button_id,
+        "button_label": button_label,
+        "count": count,
+        "timestamp": timestamp,
         "iso-date": iso_date,
-        time: time,
+        "date": date,
+        "time": time,
       },
-      geometry: {
-        type: "Point",
-        coordinates: [
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           currPosition.coords.longitude,
           currPosition.coords.latitude,
           currPosition.coords.altitude,
@@ -262,6 +265,7 @@ var dataHead = [
   "altitude",
   "timestamp",
   "iso-date",
+  "date",
   "time",
 ];
 var dataArr = [dataHead];
@@ -324,7 +328,7 @@ buttonLabel6.value = countBtn6.innerHTML;
 buttonLabel6.style.visibility = "hidden";
 
 var buttonLabel7 = document.getElementById("buttonLabel7");
-buttonLabel7.value = countBtn4.innerHTML;
+buttonLabel7.value = countBtn7.innerHTML;
 buttonLabel7.style.visibility = "hidden";
 
 var buttonLabel8 = document.getElementById("buttonLabel8");
@@ -457,6 +461,7 @@ function countPress() {
     currPosition.coords.longitude,
     currPosition.coords.altitude,
     currPosition.coords.timestamp,
+    yr + "-" + mo + "-" + dt + "T" + hr + ":" + mn + ":" + sc, //yr + "-" + mo + "-" + dt,
     yr + "-" + mo + "-" + dt,
     hr + ":" + mn + ":" + sc,
   ];
@@ -477,6 +482,7 @@ function countPress() {
     currPosition.coords.longitude,
     currPosition.coords.altitude,
     currPosition.coords.timestamp,
+    yr + "-" + mo + "-" + dt + "T" + hr + ":" + mn + ":" + sc, //yr + "-" + mo + "-" + dt,
     yr + "-" + mo + "-" + dt,
     hr + ":" + mn + ":" + sc
   );

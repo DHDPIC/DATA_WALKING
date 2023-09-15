@@ -295,26 +295,28 @@ function createJson(
   altitude,
   timestamp,
   iso_date,
+  date,
   time
 ) {
   //console.log("blah blah json");
   //
   if (altitude === null) {
     myJson.features.push({
-      type: "Feature",
-      properties: {
-        id: id,
-        button_id: button_id,
-        button_label: button_label,
-        count: count,
-        audio: the_text,
-        timestamp: timestamp,
+      "type": "Feature",
+      "properties": {
+        "id": id,
+        "button_id": button_id,
+        "button_label": button_label,
+        "count": count,
+        "audio": the_text,
+        "timestamp": timestamp,
         "iso-date": iso_date,
-        time: time,
+        "date": date,
+        "time": time,
       },
-      geometry: {
-        type: "Point",
-        coordinates: [
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           currPosition.coords.longitude,
           currPosition.coords.latitude,
         ],
@@ -323,20 +325,21 @@ function createJson(
   } else {
     //
     myJson.features.push({
-      type: "Feature",
-      properties: {
-        id: id,
-        button_id: button_id,
-        button_label: button_label,
-        count: count,
-        audio: the_text,
-        timestamp: timestamp,
+      "type": "Feature",
+      "properties": {
+        "id": id,
+        "button_id": button_id,
+        "button_label": button_label,
+        "count": count,
+        "audio": the_text,
+        "timestamp": timestamp,
         "iso-date": iso_date,
-        time: time,
+        "date": date,
+        "time": time,
       },
-      geometry: {
-        type: "Point",
-        coordinates: [
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           currPosition.coords.longitude,
           currPosition.coords.latitude,
           currPosition.coords.altitude,
@@ -356,23 +359,24 @@ function createSmallJson(
   altitude,
   timestamp,
   iso_date,
+  date,
   time
 ) {
   //console.log("blah blah json");
   //
   if (altitude === null) {
     myJson.features.push({
-      type: "Feature",
-      properties: {
-        id: id,
-        audio: the_text,
-        timestamp: timestamp,
+      "type": "Feature",
+      "properties": {
+        "id": id,
+        "audio": the_text,
+        "timestamp": timestamp,
         "iso-date": iso_date,
-        time: time,
+        "time": time,
       },
-      geometry: {
-        type: "Point",
-        coordinates: [
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           currPosition.coords.longitude,
           currPosition.coords.latitude,
         ],
@@ -381,17 +385,17 @@ function createSmallJson(
   } else {
     //
     myJson.features.push({
-      type: "Feature",
-      properties: {
-        id: id,
-        audio: the_text,
-        timestamp: timestamp,
+      "type": "Feature",
+      "properties": {
+        "id": id,
+        "audio": the_text,
+        "timestamp": timestamp,
         "iso-date": iso_date,
-        time: time,
+        "time": time,
       },
-      geometry: {
-        type: "Point",
-        coordinates: [
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
           currPosition.coords.longitude,
           currPosition.coords.latitude,
           currPosition.coords.altitude,
@@ -553,7 +557,8 @@ var dataHead = [
   "altitude",
   "timestamp",
   "iso-date",
-  "time",
+  "date",
+  "time"
 ];
 var dataArr = [dataHead];
 
@@ -713,6 +718,7 @@ function realtimeAdd(objectArr) {
     currPosition.coords.longitude,
     currPosition.coords.altitude,
     currPosition.coords.timestamp,
+    yr + "-" + mo + "-" + dt + "T" +  hr + ":" + mn + ":" + sc,
     yr + "-" + mo + "-" + dt,
     hr + ":" + mn + ":" + sc,
   ];
@@ -747,6 +753,7 @@ function realtimeAdd(objectArr) {
     currPosition.coords.longitude,
     currPosition.coords.altitude,
     currPosition.coords.timestamp,
+    yr + "-" + mo + "-" + dt + "T" +  hr + ":" + mn + ":" + sc,
     yr + "-" + mo + "-" + dt,
     hr + ":" + mn + ":" + sc
   );
@@ -822,6 +829,7 @@ function realtimeAddArray(audioArr) {
     currPosition.coords.longitude,
     currPosition.coords.altitude,
     currPosition.coords.timestamp,
+    yr + "-" + mo + "-" + dt + "T" +  hr + ":" + mn + ":" + sc,
     yr + "-" + mo + "-" + dt,
     hr + ":" + mn + ":" + sc,
   ];
@@ -856,6 +864,7 @@ function realtimeAddArray(audioArr) {
     currPosition.coords.longitude,
     currPosition.coords.altitude,
     currPosition.coords.timestamp,
+    yr + "-" + mo + "-" + dt + "T" +  hr + ":" + mn + ":" + sc,
     yr + "-" + mo + "-" + dt,
     hr + ":" + mn + ":" + sc
   );

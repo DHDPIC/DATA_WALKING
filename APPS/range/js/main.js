@@ -15,16 +15,25 @@ map.on('load', function () {
     'data': myJson
 
 });
+
 // Add a symbol layer
   map.addLayer({
     'id': 'points',
     'type': 'circle',
     'source': 'points',
     paint: {
-      'circle-color': '#C97CF7',
+      //'circle-color': '#C97CF7',
       'circle-radius': ["abs",["+",["get", "range_value"],1]],
       'circle-stroke-width': 2,
-      'circle-stroke-color': '#fff'
+      'circle-stroke-color': '#fff',
+	  'circle-color': [
+		'case',
+		['<', ['get', 'range_value'], 0],
+		'#FFED6F',
+		['>=', ['get', 'range_value'], 0],
+		'#C97CF7',
+		'#000'
+	  ]
     }
   });
 
@@ -35,7 +44,7 @@ var myJson = {
     features: []
 };
 
-function createJson(id, button_id, button_label, count, range_value, latitude, longitude, altitude, timestamp, iso_date, time) {
+function createJson(id, button_id, button_label, count, range_value, latitude, longitude, altitude, timestamp, iso_date, date, time) {
 	console.log("blah blah json");
 	//
 	if(altitude === null) {
@@ -49,6 +58,7 @@ function createJson(id, button_id, button_label, count, range_value, latitude, l
 	  	"range_value": range_value,
 	  	"timestamp": timestamp,
 	  	"iso-date": iso_date,
+		date: date,
 	  	"time": time
 
 	  },
@@ -71,6 +81,7 @@ function createJson(id, button_id, button_label, count, range_value, latitude, l
 	  	"range_value": range_value,
 	  	"timestamp": timestamp,
 	  	"iso-date": iso_date,
+		date: date,
 	  	"time": time
 
 	  },
@@ -217,7 +228,7 @@ var exportCSVBtn = document.getElementById("exportCSV");
 var exportGeoJsonBtn = document.getElementById("exportGeoJson");
 
 var id = 0;
-var dataHead = ["id","button_id","label","count","range_value","latitude","longitude","altitude", "timestamp", "iso-date", "time"];
+var dataHead = ["id","button_id","label","count","range_value","latitude","longitude","altitude", "timestamp", "iso-date", "date", "time"];
 var dataArr = [dataHead];
 
 var addButton1 = document.getElementById("adder1");
@@ -325,7 +336,7 @@ function countPress() {
 	var v = countArr[this.value];
 	//var t = inputFieldArr[this.value].value;
 	var r = rangeInputArr[this.value].value;
-	var currArr = [id, Number(this.value), this.innerHTML, v, Number(r), currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc ];
+	var currArr = [id, Number(this.value), this.innerHTML, v, Number(r), currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc ];
 	dataArr.push(currArr);
 	//
 	console.log(dataArr);
@@ -335,7 +346,7 @@ function countPress() {
 	//
 	dataReadOut.innerHTML = currArr;
 
-	createJson(id, Number(this.value), this.innerHTML, v, Number(r), currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
+	createJson(id, Number(this.value), this.innerHTML, v, Number(r), currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
 	mapJson();
 }
 
