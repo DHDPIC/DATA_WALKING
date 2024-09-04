@@ -1,0 +1,156 @@
+
+/*@font-face {
+
+    font-family: 'mono-regular';
+    src: url('fonts/apercu-mono-regular.eot');
+    src: url('fonts/apercu-mono-regular.eot?#iefix') format('embedded-opentype'),
+         url('fonts/apercu-mono-regular.woff') format('woff'),
+         url('fonts/apercu-mono-regular.woff2') format('woff2'),
+         url('fonts/apercu-mono-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+
+    font-family: 'apercu-regular';
+    src: url('fonts/apercu-regular.eot');
+    src: url('fonts/apercu-regular.eot?#iefix') format('embedded-opentype'),
+         url('fonts/apercu-regular.woff') format('woff'),
+         url('fonts/apercu-regular.woff2') format('woff2'),
+         url('fonts/apercu-regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+
+  @font-face {
+
+    font-family: 'apercu-bold';
+    src: url('fonts/apercu-bold.eot');
+    src: url('fonts/apercu-bold.eot?#iefix') format('embedded-opentype'),
+         url('fonts/apercu-bold.woff') format('woff'),
+         url('fonts/apercu-bold.woff2') format('woff2'),
+         url('fonts/apercu-bold.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+    }
+*/
+    html {
+      font-size: 2em;
+    }
+
+    canvas {
+      position: fixed;
+      top: 0px;
+      left: 0px;
+      z-index: -1000;
+    }
+
+    body {
+    background-color: #000;/*#27baa4;*/
+    /*text-align: center;*/
+    color: #67Fae4;/*#27baa4;*//*#050508;*/
+    font-family: 'Space Mono', monospace;/*'Oxygen Mono', Monaco, sans-serif;*/
+    line-height: 1.3em;
+  }
+    
+
+    .green {
+    color: #FFFFFF; /* #346444 #FC5F6D #1ebe39;*/
+    font-family: 'Space Mono', monospace;/*'apercu-bold'*/;
+    font-weight: bold;
+  }
+
+  .bigger {
+    font-size: 48px;
+    font-weight: bold;
+  }
+
+  .menu-link {
+    font-family: 'Space Mono', monospace;;
+  }
+
+  .code {
+    font-family: 'Space Mono', monospace;
+  }
+
+  .done {
+    font-family: 'Space Mono', monospace;
+    text-decoration: line-through;
+    text-decoration-color: #F8A17A;
+    -webkit-text-decoration-color: #F8A17A;
+    -moz-text-decoration-color: #F8A17A;
+  }
+
+  .orange {
+    color: #F8A17A;
+  }
+
+  p {
+    max-width: 960px;
+  }
+
+  hr {
+    border-color: #35EDCE;
+    border-style: solid;
+  }
+
+  a {
+    color:  #35EDCE; /* #3B868B #669f87 */
+    text-decoration-color: #F8A17A;
+    -webkit-text-decoration-color: #F8A17A;
+    -moz-text-decoration-color: #F8A17A;
+  }
+
+
+  .wrapper {
+    position: relative;
+    height: 1280px;
+  }
+
+  .textlayer {
+    position: absolute;
+
+  }
+
+  .imagelayer {
+    position: absolute;
+  }
+
+  #banner {
+    width: 100%;
+    height: auto;
+  }
+
+  .drift {
+    /*position: absolute;*/
+  }
+
+  .s480 {
+    width: 480px;
+    height: auto;
+  }
+
+  .s320 {
+    width: 320px;
+    height: auto;
+  }
+
+  #r1 {
+  }
+
+  .fullwidth {
+    max-width: 100%;
+  }
+
+  .extendedwidth {
+    max-width: 960px;
+  }
+
+  .strike {
+    text-decoration: line-through;
+    text-decoration-color: #fff;
+    -webkit-text-decoration-color: #fff;
+    -moz-text-decoration-color: #fff;
+  }
