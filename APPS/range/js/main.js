@@ -5,7 +5,8 @@ container: 'map', // container ID
 style: 'mapbox://styles/dhdpic/ckny7kaku1c8617pnlfatzqpz', // style URL
 
 center: [-0.12, 51.51], // starting position [lng, lat]
-zoom: 9 // starting zoom
+zoom: 9, // starting zoom
+preserveDrawingBuffer: true,
 
 });
 
@@ -226,6 +227,7 @@ var currDate = new Date();
 var resetDataBtn = document.getElementById("resetData");
 var exportCSVBtn = document.getElementById("exportCSV");
 var exportGeoJsonBtn = document.getElementById("exportGeoJson");
+var exportMapBtn = document.getElementById("exportMap");
 
 var id = 0;
 var dataHead = ["id","button_id","label","count","range_value","latitude","longitude","altitude", "timestamp", "iso-date", "date", "time"];
@@ -417,6 +419,24 @@ function exportCSV2() {
   reader.readAsDataURL(blobData);
 }
 
+// map export functions
+function exportMap() {
+	console.log("export a map time!");
+	map.getCanvas().toBlob(mapBlobHandler);
+	
+  }
+  
+  function mapBlobHandler(content) {
+	var blobUrl = URL.createObjectURL(content);
+	//
+	let link = document.createElement("a"); // Or maybe get it from the current document
+	link.href = blobUrl;
+	link.download = "datawalking-map.png";
+	link.innerText = "Click here to download the file";
+	link.id = 'download';
+	link.click();
+  }
+
 function editPress() {
 	currEdit = !currEdit;
 	if(currEdit) {
@@ -513,6 +533,7 @@ getLocation();
 resetDataBtn.addEventListener("click", resetData);
 exportCSVBtn.addEventListener("click", exportCSV2);
 exportGeoJsonBtn.addEventListener("click", exportJson2);
+exportMapBtn.addEventListener("click", exportMap);
 
 addButton1.addEventListener("click", countPress);
 //addButton2.addEventListener("click", countPress);

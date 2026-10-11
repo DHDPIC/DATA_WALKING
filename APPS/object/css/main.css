@@ -189,6 +189,7 @@ textarea {
     font-family: 'mono-regular', monospace;
     background-color: #F8A17A;
     color: #000;
+    margin-bottom: 8px;
   }
 
   .inactive-button {
@@ -228,6 +229,7 @@ textarea {
     width: 100%;
     background-color: #000;
     color: #C97CF7;
+    height: 120px;
 
   }
 
@@ -264,7 +266,12 @@ textarea {
 
   #map {
     width: 100%; 
-    height: 200px;
+    height: 240px;
+  }
+
+  .phide {
+    visibility: hidden;
+    color: #050508;
   }
 
   

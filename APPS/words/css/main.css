@@ -167,6 +167,7 @@ textarea {
     font-family: 'mono-regular', monospace;
     background-color: #F8A17A;
     color: #000;
+    margin-bottom: 8px;
   }
 
   .inactive-button {
@@ -208,7 +209,7 @@ textarea {
 
   #map {
     width: 100%; 
-    height: 160px;
+    height: 240px;
   }
   
 

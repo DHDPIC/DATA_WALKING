@@ -147,10 +147,8 @@ function visualize() {
     //console.log("d arr alt", dataArrayAlt);
 
     if (recordData) {
-      //console.log(objects);
-      //inputFieldArr[0].value += "\n" + objects[0].label;
 
-      console.log("d arr alt rec", dataArrayAlt); // works
+      //console.log("d arr alt rec", dataArrayAlt); // works
       // add the audio to the data array
       //realtimeAddArray(dataArrayAlt); // works
 
@@ -220,9 +218,11 @@ let tempAudioCount = 0;
 //add a timer for averaging data
 //let recordTimer = setInterval(timerAverageData,1000);
 let recordTimer; // = setInterval(timerAverageData,1000);
+let mapTimer; //for re-bounding the map
 
 function timerAverageData() {
   console.log("timer hit");
+  map.getSource('points').setData(myJson);
   // average data
   tempAudioData = tempAudioData.map(function (val, indx) {
     return Math.round((val = val / tempAudioCount));
@@ -243,7 +243,12 @@ function timerAverageData() {
   }
 }
 
-/*
+function timerMap() {
+	console.log("T I M E R M A P");
+	mapJson();
+}
+
+
 // initialise mapbox
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGhkcGljIiwiYSI6IkZfUEVoTUUifQ.rNj-tr8788GTdoGnyMEtAQ';
     var map = new mapboxgl.Map({
@@ -251,12 +256,13 @@ container: 'map', // container ID
 style: 'mapbox://styles/dhdpic/ckny7kaku1c8617pnlfatzqpz', // style URL
 
 center: [-0.12, 51.51], // starting position [lng, lat]
-zoom: 9 // starting zoom
+zoom: 9, // starting zoom
+preserveDrawingBuffer: true,
 
 });
-*/
 
-/*
+
+
 map.on('load', function () {
   map.addSource('points', {
     'type': 'geojson',
@@ -264,7 +270,7 @@ map.on('load', function () {
 
 });
 // Add a symbol layer
-  map.addLayer({
+  /*map.addLayer({
     'id': 'points',
     'type': 'circle',
     'source': 'points',
@@ -274,10 +280,45 @@ map.on('load', function () {
       'circle-stroke-width': 1,
       'circle-stroke-color': '#fff'
     }
-  });
+  });*/
+
+  for (let i = 0; i < 128; i++) {
+    map.addLayer({
+      id: "sound-app-" + i,
+      type: "circle",
+      source: "points",
+      paint: {
+        //"circle-radius": ['/', ['number', ['get', 'id'], 5], 50], //divide id value by 50
+        "circle-radius": [
+          "^",
+          ["/", ["number", ["at", i, ["get", "audio"]]], 80],
+          4,
+        ], //works!gets audio array 0
+        "circle-opacity": 0.4,
+        //"circle-color": "rgb(171, 72, 33)",
+        "circle-color": [
+          "interpolate",
+          ["linear"],
+          i,
+          0,
+          "#000",
+          8,
+          "#3300FF",
+          16,
+          "#FF0033",
+          32,
+          "#FFFF33",
+          64,
+          "#33FF33",
+          128,
+          "#33FFFF",
+        ],
+      },
+});
+}
 
 });
-*/
+
 
 var myJson = {
   type: "FeatureCollection",
@@ -422,6 +463,24 @@ function mapJson() {
 }
 */
 
+function mapJson() {
+	console.log("mappp");
+	
+  	var bounds = new mapboxgl.LngLatBounds();
+	
+  	myJson.features.forEach(function(feature) {
+    	bounds.extend(feature.geometry.coordinates);
+    	//console.log(feature);
+	});
+	
+	map.fitBounds(bounds);
+}
+
+function mapMe() {
+	
+	map.flyTo({center:[currPosition.coords.longitude, currPosition.coords.latitude], zoom:16});
+}
+
 function exportJson() {
   console.log("export geojson...");
   console.log(myJson);
@@ -544,6 +603,7 @@ var elapsedRecordingTime = 0;
 var resetDataBtn = document.getElementById("resetData");
 var exportCSVBtn = document.getElementById("exportCSV");
 var exportGeoJsonBtn = document.getElementById("exportGeoJson");
+var exportMapBtn = document.getElementById("exportMap"); 
 
 var id = 0;
 var dataHead = [
@@ -612,7 +672,8 @@ function showPosition(position) {
   "<br>Altitude: " + position.coords.altitude;*/
   geoEnabled.innerHTML = "geolocation enabled";
   geoEnabled.style.visibility = "hidden";
-
+  currPosition = position;
+  mapMe();
   //
   if(tapped) {
     var s = document.getElementById("shield");
@@ -634,11 +695,21 @@ function countPress() {
     addButton.classList.toggle('recording');
     tempAudioData = tempAudioData.fill(0);
     recordTimer = setInterval(timerAverageData, 1000);
+    mapTimer = setInterval(timerMap, 60000);
+    
+    if(myJson.features.length > 0) {
+			mapJson();
+		} else {
+			console.log("map me")
+			mapMe();
+		}
   } else {
     addButton.innerHTML = "Start";
     addButton.classList.toggle('recording');
     clearInterval(recordTimer);
     recordTimer = null; //setInterval(timerAverageData,1000);
+    clearInterval(mapTimer);
+    mapTimer = null;
     // clean up and record any leftover data
     console.log("stop hit");
     // average data
@@ -881,13 +952,14 @@ function resetData() {
   countTracker1.innerHTML = "0s";
   elapsedRecordingTime = 0;
   //
-  inputFieldArr[0].value = "Objects recorded...";
+  //inputFieldArr[0].value = "Objects recorded...";
   // reset json
   myJson = {
     type: "FeatureCollection",
     features: [],
   };
   //
+  map.getSource('points').setData(myJson);
   console.log(dataArr);
 }
 
@@ -935,6 +1007,24 @@ function exportCSV2() {
     link.click();
   };
   reader.readAsDataURL(blobData);
+}
+
+// map export functions
+function exportMap() {
+	console.log("export a map time!");
+	map.getCanvas().toBlob(mapBlobHandler);
+	
+}
+  
+function mapBlobHandler(content) {
+	var blobUrl = URL.createObjectURL(content);
+	//
+	let link = document.createElement("a"); // Or maybe get it from the current document
+	link.href = blobUrl;
+	link.download = "datawalking-map.png";
+	link.innerText = "Click here to download the file";
+	link.id = 'download';
+	link.click();
 }
 
 function editPress() {
@@ -1006,6 +1096,7 @@ getLocation();
 resetDataBtn.addEventListener("click", resetData);
 exportCSVBtn.addEventListener("click", exportCSV2);
 exportGeoJsonBtn.addEventListener("click", exportJson2);
+exportMapBtn.addEventListener("click", exportMap);
 
 addButton.addEventListener("click", countPress);
 

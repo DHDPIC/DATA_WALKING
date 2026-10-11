@@ -17,11 +17,12 @@ const constraints = {
 	audio: false,
   video: {
     facingMode: {
-      exact: 'environment'
+      ideal: 'environment'
     }
   }
 };
 
+let snapData = false;
 let recordData = false;
 let objectId = 0;
 
@@ -83,7 +84,7 @@ function detect() {
 
     if(objects){
       draw();
-      if(recordData) {
+      if(recordData || snapData) {
       	//console.log(objects);
       	//inputFieldArr[0].value += "\n" + objects[0].label;
 
@@ -99,8 +100,10 @@ function detect() {
       		//realtimeAdd(JSON.stringify(objects));
       		realtimeAdd(objects);
       	}
-      	
+      	snapData = false;
       }
+	  
+	  
     }
     
     detect();
@@ -169,7 +172,7 @@ function createCanvas(w, h){
 }
 
 
-/*
+
 // initialise mapbox
 mapboxgl.accessToken = 'pk.eyJ1IjoiZGhkcGljIiwiYSI6IkZfUEVoTUUifQ.rNj-tr8788GTdoGnyMEtAQ';
     var map = new mapboxgl.Map({
@@ -177,35 +180,55 @@ container: 'map', // container ID
 style: 'mapbox://styles/dhdpic/ckny7kaku1c8617pnlfatzqpz', // style URL
 
 center: [-0.12, 51.51], // starting position [lng, lat]
-zoom: 9 // starting zoom
+zoom: 9, // starting zoom
+preserveDrawingBuffer: true,
 
 });
-*/
 
-/*
+
+
 map.on('load', function () {
-  map.addSource('points', {
-    'type': 'geojson',
-    'data': myJson
-
-});
-// Add a symbol layer
-  map.addLayer({
-    'id': 'points',
-    'type': 'circle',
-    'source': 'points',
-    paint: {
-      'circle-color': '#C97CF7',
-      'circle-radius': 4,
-      'circle-stroke-width': 1,
-      'circle-stroke-color': '#fff'
-    }
+	map.addSource('points', {
+	  'type': 'geojson',
+	  'data': myJson
+  
   });
+  
+	// Add a symbol layer
+	map.addLayer({
+	  'id': 'points',
+	  'type': 'symbol',
+	  'source': 'points',
+	  /*paint: {
+		'circle-color': '#C97CF7',
+		'circle-radius': 4,
+		'circle-stroke-width': 1,
+		'circle-stroke-color': '#fff'
+	  }*/
+	  'layout': {
+		  'text-field': ["get","label"],
+		  //'text-font': ['Apercu Bold'],
+		  'text-size': 10,
+		  'text-allow-overlap': true
+	  },
+	  'paint': {
+		  'text-halo-color': '#C97CF7',
+		  'text-halo-width': 0.5,
+		  'text-halo-blur': 0.5
+	  }
+	});
+  
+  });
+  
 
-});
-*/
+
 
 var myJson = {
+    type: "FeatureCollection",
+    features: []
+};
+
+var dotJson = {
     type: "FeatureCollection",
     features: []
 };
@@ -261,65 +284,76 @@ function createJson(id, button_id, button_label, count, the_text, latitude, long
 console.log(myJson);
 }
 
-function createSmallJson(id, the_text, latitude, longitude, altitude, timestamp, iso_date, date, time) {
+function createSmallJson(id, the_label, the_confidence, latitude, longitude, altitude, timestamp, iso_date, date, time) {
 	//console.log("blah blah json");
 	//
 	if(altitude === null) {
 	myJson.features.push({
+	"geometry": {
+	    "type": "Point",
+	    "coordinates": [currPosition.coords.longitude, currPosition.coords.latitude]
+	  },
 	  "type": "Feature",
 	  "properties":{
 	  	"id":id,
-	  	"objects": the_text,
+	  	"label":the_label,
+	  	"confidence": the_confidence,
 	  	"timestamp": timestamp,
 	  	"iso-date": iso_date,
 		"date": date,
 	  	"time": time
 
-	  },
-	  "geometry": {
-	    "type": "Point",
-	    "coordinates": [currPosition.coords.longitude, currPosition.coords.latitude]
 	  }
+	  
 	});
 
 	} else {
 
 	//
 	myJson.features.push({
+	"geometry": {
+	    "type": "Point",
+	    "coordinates": [currPosition.coords.longitude, currPosition.coords.latitude, currPosition.coords.altitude]
+	},
 	  "type": "Feature",
 	  "properties":{
 	  	"id":id,
-	  	"objects": the_text,
+		"label":the_label,
+	  	"confidence": the_confidence,
 	  	"timestamp": timestamp,
 	  	"iso-date": iso_date,
 		"date": date,
 	  	"time": time
 
-	  },
-	  "geometry": {
-	    "type": "Point",
-	    "coordinates": [currPosition.coords.longitude, currPosition.coords.latitude, currPosition.coords.altitude]
 	  }
+	  
 	});
+	
+	  
 }
 //
-console.log(myJson);
+//console.log(myJson);
 }
 
-/*
-function mapJson() {
-	map.getSource('points').setData(myJson);
-  	//
-  	var bounds = new mapboxgl.LngLatBounds();
 
+function mapJson() {
+	console.log("mappp");
+	
+  	var bounds = new mapboxgl.LngLatBounds();
+	
   	myJson.features.forEach(function(feature) {
     	bounds.extend(feature.geometry.coordinates);
-    	console.log(feature);
+    	//console.log(feature);
 	});
-
+	
 	map.fitBounds(bounds);
 }
-*/
+
+function mapMe() {
+	
+	map.flyTo({center:[currPosition.coords.longitude, currPosition.coords.latitude], zoom:16});
+}
+
 
 function exportJson() {
   
@@ -439,15 +473,19 @@ var currDate = new Date();
 var resetDataBtn = document.getElementById("resetData");
 var exportCSVBtn = document.getElementById("exportCSV");
 var exportGeoJsonBtn = document.getElementById("exportGeoJson");
+var exportMapBtn = document.getElementById("exportMap");
 
 var id = 0;
 var dataHead = ["id","button_id","label","count","objects","latitude","longitude","altitude", "timestamp", "iso-date", "date", "time"];
 var dataArr = [dataHead];
 
-let recordTimer;
+let recordTimer; // for displaying elapsed time
 let elapsedRecordingTime = 0;
+let mapTimer; //for re-bounding the map
+let snapTimer; // to trigger map update after pressing the button
 
 var addButton = document.getElementById("adder");
+var snapButton = document.getElementById("adder2");
 
 var countTracker1 = document.getElementById("countNumberTracker1");
 countTracker1.innerHTML = "0s";
@@ -503,6 +541,8 @@ function showPosition(position) {
   //
   var s = document.getElementById("shield");
   s.style.visibility = "hidden";
+  currPosition = position;
+  mapMe();
 }
 
 function trackPosition(position) {
@@ -511,6 +551,9 @@ function trackPosition(position) {
 
 function timerAverageData() {
 	console.log("timer hit");
+	console.log(myJson);
+	map.getSource('points').setData(myJson);
+	
 	// increment timer display
 	elapsedRecordingTime++;
 	let mins = Math.floor(elapsedRecordingTime/60);
@@ -520,7 +563,36 @@ function timerAverageData() {
 	} else {
 	  countTracker1.innerHTML = secs+"s";
 	}
-  }
+}
+
+function timerMap() {
+	console.log("T I M E R M A P");
+	mapJson();
+}
+
+function timerSnap() {
+	console.log("T I M E R S N A P");
+	map.getSource('points').setData(myJson);
+	clearInterval(snapTimer);
+    snapTimer = null;
+}
+
+function snapPress() {
+	
+
+	
+	 snapData = true;
+	if(myJson.features.length > 0) {
+		mapJson();
+	} else {
+		console.log("map me")
+		mapMe();
+		
+		//console.log("Src= ", map.getSource('points'))
+	}
+	snapTimer = setInterval(timerSnap, 100);
+	
+}
 
 
 function countPress() {
@@ -531,11 +603,22 @@ function countPress() {
 		addButton.innerHTML = "Stop";
 		addButton.classList.toggle('recording');
 		recordTimer = setInterval(timerAverageData, 1000);
+		mapTimer = setInterval(timerMap, 60000);
+		
+		
+		if(myJson.features.length > 0) {
+			mapJson();
+		} else {
+			console.log("map me")
+			mapMe();
+		}
 	} else {
 		addButton.innerHTML = "Start";
 		addButton.classList.toggle('recording');
 		clearInterval(recordTimer);
     	recordTimer = null; //setInterval(timerAverageData,1000);
+		clearInterval(mapTimer);
+    	mapTimer = null;
 	}
 
 
@@ -657,8 +740,9 @@ function realtimeAdd(objectArr) {
 	var reducedJSON = [];
 	for(let i=0; i<objectArr.length; i++) {
 		//- production -//reducedJSON[i] = {"label": objectArr[i].label, "confidence": objectArr[i].confidence.toFixed(3)};
-		let indiJSON =  {"label": objectArr[i].label, "confidence": objectArr[i].confidence.toFixed(3)};
-		createSmallJson(id, indiJSON, currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
+		//let indiJSON =  {"label": objectArr[i].label, "confidence": objectArr[i].confidence.toFixed(3)};
+		//let arrJSON =  [objectArr[i].label, objectArr[i].confidence];
+		createSmallJson(id, objectArr[i].label, parseFloat(objectArr[i].confidence.toFixed(3)), currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
 		id++;
 	}
 	//- production -//createSmallJson(id, reducedJSON, currPosition.coords.latitude, currPosition.coords.longitude, currPosition.coords.altitude, currPosition.coords.timestamp, yr+"-"+mo+"-"+dt+"T"+hr+":"+mn+":"+sc, yr+"-"+mo+"-"+dt, hr+":"+mn+":"+sc);
@@ -685,6 +769,7 @@ function resetData() {
 	};
 	//
 	console.log(dataArr);
+	map.getSource('points').setData(myJson);
 }
 
 function exportCSV() {
@@ -734,6 +819,24 @@ function exportCSV2() {
     link.click();
   }
   reader.readAsDataURL(blobData);
+}
+
+// map export functions
+function exportMap() {
+	console.log("export a map time!");
+	map.getCanvas().toBlob(mapBlobHandler);
+	
+}
+  
+function mapBlobHandler(content) {
+	var blobUrl = URL.createObjectURL(content);
+	//
+	let link = document.createElement("a"); // Or maybe get it from the current document
+	link.href = blobUrl;
+	link.download = "datawalking-map.png";
+	link.innerText = "Click here to download the file";
+	link.id = 'download';
+	link.click();
 }
 
 function editPress() {
@@ -806,8 +909,10 @@ getLocation();
 resetDataBtn.addEventListener("click", resetData);
 exportCSVBtn.addEventListener("click", exportCSV2);
 exportGeoJsonBtn.addEventListener("click", exportJson2);
+exportMapBtn.addEventListener("click", exportMap);
 
 addButton.addEventListener("click", countPress);
+snapButton.addEventListener("click", snapPress);
 
 
 //editBtn.addEventListener("click", editPress);
